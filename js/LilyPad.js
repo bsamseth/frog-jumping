@@ -28,7 +28,7 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
     }
 
     this.legalJump = function(other) {
-        return Math.abs(this.index - other.index) == this.frogs.length;
+        return Math.abs(this.index - other.index) == this.frogs.length && other.frogs.length > 0;
     }
 
     this.clicked = function() {

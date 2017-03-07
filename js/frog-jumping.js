@@ -1,13 +1,13 @@
 var canvas;
-var HEIGHT = 600;
-var WIDTH = 900;
+var canvasHolderElement;
+var HEIGHT;
+var WIDTH;
 var FPS = 10;
 
 // Lily pads
-var LILYPAD_Y = Math.floor(5 * HEIGHT / 6);
-var LILYPAD_WIDTH = 50;
-var LILYPAD_HEIGHT = Math.floor(LILYPAD_WIDTH/3);
-console.log("HEIGHT " + LILYPAD_HEIGHT); 
+var LILYPAD_Y;
+var LILYPAD_WIDTH;
+var LILYPAD_HEIGHT;
 var LILYPAD_COLOR;
 var lilyPadsInfo = {
     selected : null,
@@ -30,7 +30,15 @@ function preload() {
 }
 
 function setup() {
+    canvasHolderElement = select('#p5canvas');
+    WIDTH = canvasHolderElement.width;
+    HEIGHT = canvasHolderElement.height;
+
+    // Size parameters
+
+
     canvas = createCanvas(WIDTH, HEIGHT);
+    canvas.parent('p5canvas');
 
     // Define colors
     BG_COLOR = color(200, 200, 255);
@@ -50,7 +58,7 @@ function setup() {
                  this.slider.y+15);
         }
     };
-    padSlider.slider.position(20, 20);
+    padSlider.slider.parent('p5canvas-slider');
     initLayout();
 }
 
@@ -67,12 +75,22 @@ function draw() {
 }
 
 function initLayout() {
+    console.log(WIDTH, HEIGHT);
     var nPads = padSlider.slider.value();
+    LILYPAD_Y = Math.floor(5 * HEIGHT / 6);
+    LILYPAD_WIDTH = Math.floor(WIDTH / (1.5 * nPads + 0.5));    //  (n+1)*0.5*LILYPAD_WIDTH + n*LILYPAD_WIDTH = LILYPAD_WIDTH * (1.5*n + 0.5) = WIDTH
+    LILYPAD_HEIGHT = Math.floor(LILYPAD_WIDTH/3);
+    LILYPAD_COLOR;
+    lilyPadsInfo = {
+        selected : null,
+    };
+
+    FROG_SIZE = Math.floor(3 * LILYPAD_WIDTH / 5);
     lilyPads = [];
     for (var i = 0; i < nPads; i++) {
         var lilyPad = new LilyPad(i, 
                                   lilyPadsInfo, 
-                                  (i+1)*LILYPAD_WIDTH + i*40, 
+                                  (1.5*i + 1) * LILYPAD_WIDTH, 
                                   LILYPAD_Y, 
                                   LILYPAD_WIDTH,
                                   LILYPAD_HEIGHT, 
@@ -91,4 +109,14 @@ function mouseClicked() {
     for (var i = 0; i < lilyPads.length; i++) {
         lilyPads[i].clicked();
     }
+}
+
+function touchEnded() {
+    mouseX = touchX;
+    mouseY = touchY;
+    mouseClicked();
+}
+
+function touchStarted() {
+    // Prevent touch from dragging screen (default action).
 }
