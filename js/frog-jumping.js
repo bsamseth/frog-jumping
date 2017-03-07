@@ -102,19 +102,10 @@ function initLayout() {
     console.log(lilyPads);
 }
 
-function keyPressed() {
-}
-
-function mouseClicked() {
+function touchEnded() {
     for (var i = 0; i < lilyPads.length; i++) {
         lilyPads[i].clicked();
     }
-}
-
-function touchEnded() {
-    mouseX = touchX;
-    mouseY = touchY;
-    mouseClicked();
 }
 
 function touchStarted() {
