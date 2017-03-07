@@ -112,8 +112,6 @@ function mouseClicked() {
 }
 
 function touchEnded() {
-    mouseX = touchX;
-    mouseY = touchY;
     mouseClicked();
 }
 
