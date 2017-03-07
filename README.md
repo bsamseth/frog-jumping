@@ -1,3 +1,6 @@
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/bsamseth/frog-jumping/blob/master/LICENSE)
+
 # Frog Jumping
 Javascript based playground for the jumping frogs puzzle, as shown in [this Numberphile video](https://youtu.be/X3HDnrehyDM):
 
