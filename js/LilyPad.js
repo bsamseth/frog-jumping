@@ -28,16 +28,22 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
     }
 
     this.legalJump = function(other) {
-        return Math.abs(this.index - other.index) == this.frogs.length && other.frogs.length > 0;
+        return  other.frogs.length > 0 &&
+                !(other.frogs[other.frogs.length-1].isQueen) &&
+                Math.abs(this.index - other.index) == this.frogs.length;
+    }
+
+    this.clickedOn = function() {
+        var d = dist(this.x, this.y, mouseX, mouseY);
+        return 2 * d <= Math.max(this.width, this.height)
     }
 
     this.clicked = function() {
-        var d = dist(this.x, this.y, mouseX, mouseY);
-        if (2 * d <= Math.max(this.width, this.height)) {
+        if (this.clickedOn()) {
             var fromLily = this.groupObject.selected;
             if (fromLily && fromLily != this && fromLily.legalJump(this)) {
-                for (var i = fromLily.frogs.length-1; i >= 0; i--) {
-                    var frog = fromLily.frogs.pop();
+                for (var i = 0; i < fromLily.frogs.length; i++) {
+                    var frog = fromLily.frogs[i];
                     frog.lilyPad = this;
                     frog.height = this.frogs.length;
                     this.frogs.push(frog);
@@ -51,5 +57,11 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
                 this.groupObject.selected = this.selected ? this : null;
             }
         }
+    }
+
+    this.makeQueenIfClicked = function() {
+       if (this.clickedOn()) {
+            this.frogs[this.frogs.length-1].makeQueen();
+       } 
     }
 }

@@ -15,6 +15,7 @@ var lilyPadsInfo = {
 
 // Frogs
 var CROWN_IMAGE;
+var QUEEN_IMAGE;
 var FROG_IMAGE;
 var FROG_SIZE = 30;
 
@@ -30,6 +31,7 @@ var lilyPads = [];
 function preload() {
     FROG_IMAGE = loadImage('assets/green-frog.png');
     CROWN_IMAGE = loadImage('assets/crown.png');
+    QUEEN_IMAGE = loadImage('assets/queen-frog.png');
 }
 
 function setup() {
@@ -99,7 +101,6 @@ function puzzleSolved() {
 }
 
 function initLayout() {
-    console.log(WIDTH, HEIGHT);
     var nPads = padSlider.slider.value();
     LILYPAD_Y = Math.floor(5 * HEIGHT / 6);
     LILYPAD_WIDTH = Math.floor(WIDTH / (1.5 * nPads + 0.5));
@@ -122,12 +123,21 @@ function initLayout() {
         lilyPads.push(lilyPad);
     }
     padSliderValue = nPads;
-    console.log(lilyPads);
 }
 
 function touchEnded() {
-    for (var i = 0; i < lilyPads.length; i++) {
-        lilyPads[i].clicked();
+    if (queenButton.highlight) {
+        // If the queen button was selected last,
+        // Check if a lily pad has been clicked to see
+        // if we should make a queen.
+        for (var i = 0; i < lilyPads.length; i++) {
+            lilyPads[i].makeQueenIfClicked();
+        }
+    } else {
+        // Forward the click to all the lily pads.
+        for (var i = 0; i < lilyPads.length; i++) {
+            lilyPads[i].clicked();
+        }
     }
     queenButton.clicked();
 }
