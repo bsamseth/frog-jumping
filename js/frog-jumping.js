@@ -14,6 +14,7 @@ var lilyPadsInfo = {
 };
 
 // Frogs
+var CROWN_IMAGE;
 var FROG_IMAGE;
 var FROG_SIZE = 30;
 
@@ -23,10 +24,12 @@ var BG_COLOR;
 // Elements
 var padSlider;
 var padSliderValue; // Used to determine if #pads has changed.
+var queenButton;
 var lilyPads = [];
 
 function preload() {
     FROG_IMAGE = loadImage('assets/green-frog.png');
+    CROWN_IMAGE = loadImage('assets/crown.png');
 }
 
 function setup() {
@@ -53,6 +56,9 @@ function setup() {
     };
     padSlider.slider.parent('p5canvas-slider');
     initLayout();
+
+    // Make a queening button as clickable image of a crown.
+    queenButton = new QueenCrown();
 }
 
 function draw() {
@@ -64,6 +70,8 @@ function draw() {
     for (var i = 0; i < lilyPads.length; i++) {
         lilyPads[i].draw();
     }
+
+    queenButton.draw();
 
     if (puzzleSolved()) {
         push()
@@ -87,7 +95,7 @@ function puzzleSolved() {
         else if (frogCount != 0)
             return false;
     }
-    return false;
+    assert(false); // Should be unreachable.
 }
 
 function initLayout() {
@@ -121,6 +129,7 @@ function touchEnded() {
     for (var i = 0; i < lilyPads.length; i++) {
         lilyPads[i].clicked();
     }
+    queenButton.clicked();
 }
 
 function touchStarted() {
