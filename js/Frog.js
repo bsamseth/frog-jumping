@@ -5,6 +5,7 @@ function Frog(size, lilyPad, height) {
     this.height = height;
     this.img = FROG_IMAGE;
     this.isQueen = false;
+    this.isLazy = false;
     
     this.draw = function() {
         image(this.img, this.lilyPad.x - this.size/2, 
@@ -14,7 +15,14 @@ function Frog(size, lilyPad, height) {
 
     this.makeQueen = function() {
         this.isQueen = true;
+        this.isLazy = false;
         this.img = QUEEN_IMAGE;
+    }
+
+    this.makeLazy = function() {
+        this.isLazy = true;
+        this.isQueen = false;
+        this.img = LAZY_IMAGE;
     }
 }
 

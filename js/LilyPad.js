@@ -30,6 +30,7 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
     this.legalJump = function(other) {
         return  other.frogs.length > 0 &&
                 !(other.frogs[other.frogs.length-1].isQueen) &&
+                !(this.frogs[0].isLazy) &&
                 Math.abs(this.index - other.index) == this.frogs.length;
     }
 
@@ -64,4 +65,11 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
             this.frogs[this.frogs.length-1].makeQueen();
        } 
     }
+
+    this.makeLazyIfClicked = function() {
+       if (this.clickedOn()) {
+            this.frogs[this.frogs.length-1].makeLazy();
+       } 
+    }
+
 }

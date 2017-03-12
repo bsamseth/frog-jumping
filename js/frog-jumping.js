@@ -17,6 +17,7 @@ var lilyPadsInfo = {
 var CROWN_IMAGE;
 var QUEEN_IMAGE;
 var FROG_IMAGE;
+var LAZY_IMAGE;
 var FROG_SIZE = 30;
 
 // Colors
@@ -32,6 +33,7 @@ function preload() {
     FROG_IMAGE = loadImage('assets/green-frog.png');
     CROWN_IMAGE = loadImage('assets/crown.png');
     QUEEN_IMAGE = loadImage('assets/queen-frog.png');
+    LAZY_IMAGE  = loadImage('assets/lazy-frog.png');
 }
 
 function setup() {
@@ -61,6 +63,10 @@ function setup() {
 
     // Make a queening button as clickable image of a crown.
     queenButton = new QueenCrown();
+    // Make a lazy button as a clickable image of a lazyfrog.
+    lazyButton = new QueenCrown();
+    lazyButton.img = LAZY_IMAGE;
+    lazyButton.x = queenButton.x + 6*queenButton.size/5;
 }
 
 function draw() {
@@ -74,6 +80,7 @@ function draw() {
     }
 
     queenButton.draw();
+    lazyButton.draw();
 
     if (puzzleSolved()) {
         push()
@@ -133,6 +140,11 @@ function touchEnded() {
         for (var i = 0; i < lilyPads.length; i++) {
             lilyPads[i].makeQueenIfClicked();
         }
+    } else if (lazyButton.highlight) {
+        for (var i = 0; i < lilyPads.length; i++) {
+            lilyPads[i].makeLazyIfClicked();
+        }
+        
     } else {
         // Forward the click to all the lily pads.
         for (var i = 0; i < lilyPads.length; i++) {
@@ -140,6 +152,7 @@ function touchEnded() {
         }
     }
     queenButton.clicked();
+    lazyButton.clicked();
 }
 
 function touchStarted() {
