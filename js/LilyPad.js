@@ -10,6 +10,7 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
     this.frogs = []
     this.frogSize = FROG_SIZE;
     this.selected = false;
+    this.isWaterLogged = false;
 
     this.setFrogs = function(n) {
         for (var i = 0; i < n; i++) {
@@ -19,7 +20,10 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
 
     this.draw = function() {
         push();
-        fill((this.selected) ? color(100, 255, 100) : this.fillColor);
+        if (this.isWaterLogged)
+            fill(color(25, 100, 50, 100));
+        else
+            fill((this.selected) ? color(100, 255, 100) : this.fillColor);
         ellipse(this.x, this.y, this.width, this.height);
         for (var i = 0; i < this.frogs.length; i++) {
             this.frogs[i].draw();
@@ -52,7 +56,7 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
                 fromLily.frogs = [];
                 fromLily.selected = false;
                 this.groupObject.selected = null;
-            } else {
+            } else if (!this.isWaterLogged) {
                 this.selected = this.selected != true;
                 if (this.groupObject.selected) this.groupObject.selected.selected = false;
                 this.groupObject.selected = this.selected ? this : null;
@@ -72,4 +76,10 @@ function LilyPad(index, groupObject, x, y, width, height, fillColor) {
        } 
     }
 
+    this.waterLoggIfClicked = function() {
+        if (this.clickedOn()) {
+            this.frogs = [];
+            this.isWaterLogged = true;
+        } 
+    }
 }

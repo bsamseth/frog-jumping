@@ -18,6 +18,7 @@ var CROWN_IMAGE;
 var QUEEN_IMAGE;
 var FROG_IMAGE;
 var LAZY_IMAGE;
+var WATERLOGGED_IMAGE;
 var FROG_SIZE = 30;
 
 // Colors
@@ -27,6 +28,8 @@ var BG_COLOR;
 var padSlider;
 var padSliderValue; // Used to determine if #pads has changed.
 var queenButton;
+var lazyButton;
+var waterLoggButton;
 var lilyPads = [];
 
 function preload() {
@@ -34,6 +37,7 @@ function preload() {
     CROWN_IMAGE = loadImage('assets/crown.png');
     QUEEN_IMAGE = loadImage('assets/queen-frog.png');
     LAZY_IMAGE  = loadImage('assets/lazy-frog.png');
+    WATERLOGGED_IMAGE = loadImage('assets/no-frogs.png');
 }
 
 function setup() {
@@ -67,6 +71,10 @@ function setup() {
     lazyButton = new QueenCrown();
     lazyButton.img = LAZY_IMAGE;
     lazyButton.x = queenButton.x + 6*queenButton.size/5;
+    // Make a waterlogg button
+    waterLoggButton = new QueenCrown();
+    waterLoggButton.x = lazyButton.x + 6*lazyButton.size/5;
+    waterLoggButton.img = WATERLOGGED_IMAGE;
 }
 
 function draw() {
@@ -81,6 +89,7 @@ function draw() {
 
     queenButton.draw();
     lazyButton.draw();
+    waterLoggButton.draw();
 
     if (puzzleSolved()) {
         push()
@@ -97,14 +106,16 @@ function draw() {
 }
 
 function puzzleSolved() {
+    var otherHadFrogs = false;
     for (var i  = 0, n = lilyPads.length; i < n; i++) {
         var frogCount = lilyPads[i].frogs.length;
-        if (frogCount == n)
-            return true;
-        else if (frogCount != 0)
-            return false;
+        if (otherHadFrogs) {
+            if (frogCount != 0)            
+                return false;
+        } else 
+            otherHadFrogs = frogCount != 0;
     }
-    assert(false); // Should be unreachable.
+    return true;
 }
 
 function initLayout() {
@@ -144,6 +155,10 @@ function touchEnded() {
         for (var i = 0; i < lilyPads.length; i++) {
             lilyPads[i].makeLazyIfClicked();
         }
+    } else if (waterLoggButton.highlight) {
+        for (var i = 0; i < lilyPads.length; i++) {
+            lilyPads[i].waterLoggIfClicked();
+        }
         
     } else {
         // Forward the click to all the lily pads.
@@ -153,6 +168,7 @@ function touchEnded() {
     }
     queenButton.clicked();
     lazyButton.clicked();
+    waterLoggButton.clicked();
 }
 
 function touchStarted() {
