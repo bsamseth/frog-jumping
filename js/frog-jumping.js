@@ -60,7 +60,7 @@ function setup() {
     // Create slider for the number of lilypads.
     padSlider = {
         maxPads : 15,
-        slider : createSlider(2, 10, 5),
+        slider : createSlider(2, 20, 5),
     };
     padSlider.slider.parent('p5canvas-slider');
     initLayout();
